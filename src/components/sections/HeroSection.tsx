@@ -19,7 +19,7 @@ export default function HeroSection() {
           className="space-y-8"
         >
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
+          <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight leading-snug md:leading-tight text-gray-900 dark:text-white">
             ابدأ شغلك <br />
             <span className="text-gradient">مش بس اتعلم!</span>
           </h1>

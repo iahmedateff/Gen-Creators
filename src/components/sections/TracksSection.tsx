@@ -25,7 +25,7 @@ export default function TracksSection() {
             <Gift size={16} />
             <span>🎁 + كورس مجاني مع أي Track</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">المسارات المتكاملة <span className="text-gradient-purple">(Tracks)</span></h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">المسارات المتكاملة <span className="text-gradient-purple">(Tracks)</span></h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
             ابني مسارك من الصفر للاحتراف بخصم خاص مع باقات التراكس
           </p>
@@ -40,14 +40,14 @@ export default function TracksSection() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
-              className="bg-white dark:bg-gradient-to-b dark:from-[#151515] dark:to-[#0a0a0a] border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-2xl relative"
+              className="bg-white dark:bg-gradient-to-b dark:from-[#151515] dark:to-[#0a0a0a] border border-gray-200 dark:border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl relative"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
               
-              <h3 className="text-3xl font-extrabold mb-4 text-gray-900 dark:text-white">{track.name}</h3>
+              <h3 className="text-2xl md:text-3xl font-extrabold mb-4 text-gray-900 dark:text-white">{track.name}</h3>
               
               <div className="flex items-baseline gap-2 mb-8 border-b border-gray-100 dark:border-white/5 pb-8">
-                <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-600">{track.price}</span>
+                <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-600">{track.price}</span>
                 <span className="text-gray-500 font-medium">ج.م</span>
               </div>
               

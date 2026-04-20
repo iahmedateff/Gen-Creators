@@ -22,7 +22,7 @@ export default function WhyUsSection() {
             viewport={{ once: true }}
             className="lg:w-1/2"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">ليه تختار <span className="text-gradient">Gen Creators</span>؟</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">ليه تختار <span className="text-gradient">Gen Creators</span>؟</h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
               إحنا مش بس بنقدم محتوى تعليمي، إحنا بنوفرلك بيئة متكاملة تضمنلك تبني مهارة بجد وتلاقي فرصة شغل في أسرع وقت.
             </p>
@@ -51,8 +51,8 @@ export default function WhyUsSection() {
             viewport={{ once: true }}
             className="lg:w-1/2 relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#ff5e00]/20 to-[#7000ff]/20 rounded-[3rem] transform rotate-3 scale-105 filter blur-xl"></div>
-            <div className="bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-[3rem] p-8 relative overflow-hidden h-[600px] flex items-center justify-center shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#ff5e00]/20 to-[#7000ff]/20 rounded-2xl md:rounded-[3rem] transform rotate-3 scale-105 filter blur-xl"></div>
+            <div className="bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl md:rounded-[3rem] p-4 md:p-8 relative overflow-hidden h-[350px] md:h-[600px] flex items-center justify-center shadow-2xl">
               {/* Decorative Mockup Area */}
               <div className="absolute inset-0 opacity-10 dark:opacity-30 bg-[url('https://transparenttextures.com/patterns/carbon-fibre.png')]"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white dark:bg-gradient-to-br dark:from-[#1a1a1a] dark:to-[#0d0d0d] rounded-2xl border border-gray-200 dark:border-white/5 shadow-2xl flex flex-col overflow-hidden group">
