@@ -17,56 +17,31 @@ export default function WhyUsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:w-1/2"
+            className="w-full max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">ليه تختار <span className="text-gradient">Gen Creators</span>؟</h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white text-center">ليه تختار <span className="text-gradient">Gen Creators</span>؟</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-12 leading-relaxed text-center">
               إحنا مش بس بنقدم محتوى تعليمي، إحنا بنوفرلك بيئة متكاملة تضمنلك تبني مهارة بجد وتلاقي فرصة شغل في أسرع وقت.
             </p>
             
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {reasons.map((reason, index) => {
                 const Icon = reason.icon;
                 return (
-                  <div key={index} className="flex gap-4 items-start">
-                    <div className="w-12 h-12 rounded-xl bg-[#ff5e00]/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <Icon className="text-[#ff5e00]" size={24} />
+                  <div key={index} className="flex flex-col items-center text-center p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-[#ff5e00]/30 transition-colors">
+                    <div className="w-16 h-16 rounded-2xl bg-[#ff5e00]/10 flex items-center justify-center flex-shrink-0 mb-4">
+                      <Icon className="text-[#ff5e00]" size={32} />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{reason.title}</h3>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{reason.title}</h3>
                       <p className="text-gray-600 dark:text-gray-500">{reason.desc}</p>
                     </div>
                   </div>
                 );
               })}
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="lg:w-1/2 relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#ff5e00]/20 to-[#7000ff]/20 rounded-2xl md:rounded-[3rem] transform rotate-3 scale-105 filter blur-xl"></div>
-            <div className="bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl md:rounded-[3rem] p-4 md:p-8 relative overflow-hidden h-[350px] md:h-[600px] flex items-center justify-center shadow-2xl">
-              {/* Decorative Mockup Area */}
-              <div className="absolute inset-0 opacity-10 dark:opacity-30 bg-[url('https://transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white dark:bg-gradient-to-br dark:from-[#1a1a1a] dark:to-[#0d0d0d] rounded-2xl border border-gray-200 dark:border-white/5 shadow-2xl flex flex-col overflow-hidden group">
-                <div className="h-8 bg-gray-100 dark:bg-[#222] border-b border-gray-200 dark:border-white/5 flex items-center px-4 gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-                </div>
-                <div className="flex-1 p-6 relative">
-                  <div className="w-3/4 h-4 bg-gray-200 dark:bg-white/10 rounded mb-4"></div>
-                  <div className="w-1/2 h-4 bg-gray-200 dark:bg-white/10 rounded mb-8"></div>
-                  <div className="w-full h-32 bg-[#ff5e00]/10 dark:bg-[#ff5e00]/20 rounded-lg border border-[#ff5e00]/20 dark:border-[#ff5e00]/30 group-hover:bg-[#ff5e00]/20 dark:group-hover:bg-[#ff5e00]/30 transition-colors"></div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
