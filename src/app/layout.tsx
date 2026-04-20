@@ -10,6 +10,10 @@ const cairo = Cairo({ subsets: ["arabic", "latin"] });
 export const metadata: Metadata = {
   title: "Gen Creators - ابدأ شغلك مش بس اتعلم",
   description: "مع Gen Creators هتتعلم مهارة مطلوبة وتبدأ تكسب منها فعليًا. كورسات في البرمجة، التسويق، التصميم، والذكاء الاصطناعي.",
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  }
 };
 
 export default function RootLayout({
