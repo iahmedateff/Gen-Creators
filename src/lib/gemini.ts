@@ -20,7 +20,7 @@ Available Tracks (Integrated bundles):
 
 export async function getChatResponse(history: { role: string, parts: { text: string }[] }[], message: string) {
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
     systemInstruction: `You are the "Gen Creators AI Counselor". Your goal is to help users find the best course or track on our platform. 
     Platform Context: ${COURSES_INFO}
     Tone: Friendly, professional, and encouraging (use Egyptian Arabic primarily).
