@@ -30,15 +30,15 @@ Rules:
 `;
 
 export async function getChatResponse(history: { role: string, parts: { text: string }[] }[], message: string) {
-  // Try Gemini 2.0 first, fallback to 1.5 if 429
-  let modelName = "gemini-2.0-flash";
-  
+  // Try Gemini 2.0 Flash, fallback to lite version on rate limit
   try {
-    return await callGemini(modelName, history, message);
+    return await callGemini("gemini-2.0-flash", history, message);
   } catch (error: any) {
-    if (error.message?.includes('429') || error.message?.includes('Resource exhausted')) {
-      console.warn('Gemini 2.0 busy, falling back to 1.5');
-      return await callGemini("gemini-1.5-flash", history, message);
+    const is429 = error.message?.includes('429') || error.message?.includes('Resource exhausted');
+    const is404 = error.message?.includes('404') || error.message?.includes('not found');
+    if (is429 || is404) {
+      console.warn('Primary model unavailable, falling back to gemini-2.0-flash-lite');
+      return await callGemini("gemini-2.0-flash-lite", history, message);
     }
     throw error;
   }
