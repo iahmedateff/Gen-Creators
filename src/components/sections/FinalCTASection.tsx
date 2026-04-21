@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 
 export default function FinalCTASection() {
-  const whatsappNumber = "201012345678"; // Replace with your actual WhatsApp number
+  const whatsappNumber = "201065342596"; 
   const message = encodeURIComponent("أهلاً Gen Creators، حابب أنضم للمنصة وأستفسر أكثر عن الكورسات والمسارات المتاحة.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
