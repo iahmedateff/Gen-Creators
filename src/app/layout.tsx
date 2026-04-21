@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import ClientLayout from "@/components/layout/ClientLayout";
 
 const cairo = Cairo({ subsets: ["arabic", "latin"] });
 
@@ -11,8 +10,11 @@ export const metadata: Metadata = {
   title: "Gen Creators - ابدأ شغلك مش بس اتعلم",
   description: "مع Gen Creators هتتعلم مهارة مطلوبة وتبدأ تكسب منها فعليًا. كورسات في البرمجة، التسويق، التصميم، والذكاء الاصطناعي.",
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   }
 };
 
@@ -30,9 +32,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <Navbar />
-          {children}
-          <Footer />
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </ThemeProvider>
       </body>
     </html>

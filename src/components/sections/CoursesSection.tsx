@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
+import { useBooking } from '@/providers/BookingProvider';
 
 const courses = [
   {
@@ -47,6 +48,7 @@ const courses = [
 ];
 
 export default function CoursesSection() {
+  const { openBooking } = useBooking();
   return (
     <section id="courses" className="py-24 relative bg-gray-50/50 dark:bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +93,12 @@ export default function CoursesSection() {
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{course.newPrice} <span className="text-sm text-gray-500">ج.م</span></div>
                   <div className="text-sm text-gray-500 line-through">{course.oldPrice} ج.م</div>
                 </div>
-                <Button variant="outline" size="sm" className="group-hover:bg-[#ff5e00] group-hover:text-white transition-colors">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="group-hover:bg-[#ff5e00] group-hover:text-white transition-colors"
+                  onClick={() => openBooking(course.title, course.newPrice)}
+                >
                   احجز الآن
                 </Button>
               </div>

@@ -25,7 +25,11 @@ export default function LoginPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      window.location.href = "/";
+      if (email === "gen@admin.com") {
+        window.location.href = "/admin/dashboard";
+      } else {
+        window.location.href = "/";
+      }
     }
   };
 

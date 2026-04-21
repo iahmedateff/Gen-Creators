@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { Gift, CheckCircle2 } from 'lucide-react';
+import { useBooking } from '@/providers/BookingProvider';
 
 const tracks = [
   { name: "Marketing Track", price: 3000, features: ["أساسيات التسويق", "إدارة الحملات الإعلانية", "تحليل البيانات", "مشروع تخرج متكامل"] },
@@ -12,6 +13,7 @@ const tracks = [
 ];
 
 export default function TracksSection() {
+  const { openBooking } = useBooking();
   return (
     <section id="tracks" className="py-24 bg-gray-100 dark:bg-[#0a0a0a] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +62,11 @@ export default function TracksSection() {
                 ))}
               </ul>
               
-              <Button variant="secondary" className="w-full text-lg">
+              <Button 
+                variant="secondary" 
+                className="w-full text-lg"
+                onClick={() => openBooking(track.name, track.price)}
+              >
                 اشترك في المسار
               </Button>
             </motion.div>

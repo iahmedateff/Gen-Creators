@@ -79,7 +79,23 @@ export default function Navbar() {
                           {user.email}
                         </p>
                       </div>
-                      <div className="p-2">
+                      <div className="p-2 space-y-1">
+                        {user.email === 'gen@admin.com' && (
+                          <Link 
+                            href="/admin/dashboard" 
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="w-full text-right px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-lg transition-colors font-medium flex items-center gap-2"
+                          >
+                            لوحة التحكم
+                          </Link>
+                        )}
+                        <Link 
+                          href="/my-requests" 
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="w-full text-right px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors font-medium flex items-center gap-2"
+                        >
+                          طلباتي
+                        </Link>
                         <button 
                           onClick={() => { handleLogout(); setIsUserMenuOpen(false); }}
                           className="w-full text-right px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors font-medium flex items-center gap-2"
@@ -152,7 +168,18 @@ export default function Navbar() {
                   <span className="text-gray-700 dark:text-gray-300 font-medium px-2 py-1 rounded-md text-center items-center justify-center flex border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 mb-2">
                     {user.user_metadata?.full_name || user.email}
                   </span>
-                  <Button variant="outline" className="w-full" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>تسجيل الخروج</Button>
+                  
+                  {user.email === 'gen@admin.com' && (
+                    <Link href="/admin/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button variant="outline" className="w-full mb-2 text-primary border-primary/20">لوحة التحكم</Button>
+                    </Link>
+                  )}
+                  
+                  <Link href="/my-requests" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full mb-2">طلباتي</Button>
+                  </Link>
+
+                  <Button variant="ghost" className="w-full text-red-500" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>تسجيل الخروج</Button>
                 </>
               ) : (
                 <>
