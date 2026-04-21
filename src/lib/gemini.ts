@@ -18,19 +18,36 @@ Available Tracks (Integrated bundles):
 4. Design Track (3200 EGP) - Design basics, UI/UX, visual identity, portfolio building.
 `;
 
+const systemInstruction = `You are the "Gen Creators AI Counselor". Your goal is to help users find the best course or track on our platform. 
+Platform Context: ${COURSES_INFO}
+Tone: Friendly, professional, and encouraging (use Egyptian Arabic primarily).
+Rules:
+1. Welcome the user and ask for their name, level, and interests.
+2. Based on their level and interests, recommend one or two specific courses or tracks.
+3. Explain WHY this choice is good for them.
+4. If they seem interested in booking, tell them to click the "Book Now" button on the course card or visit the "Tracks" section.
+5. Always be concise and use emojis.
+`;
+
 export async function getChatResponse(history: { role: string, parts: { text: string }[] }[], message: string) {
+  // Try Gemini 2.0 first, fallback to 1.5 if 429
+  let modelName = "gemini-2.0-flash";
+  
+  try {
+    return await callGemini(modelName, history, message);
+  } catch (error: any) {
+    if (error.message?.includes('429') || error.message?.includes('Resource exhausted')) {
+      console.warn('Gemini 2.0 busy, falling back to 1.5');
+      return await callGemini("gemini-1.5-flash", history, message);
+    }
+    throw error;
+  }
+}
+
+async function callGemini(modelName: string, history: any[], message: string) {
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-2.0-flash",
-    systemInstruction: `You are the "Gen Creators AI Counselor". Your goal is to help users find the best course or track on our platform. 
-    Platform Context: ${COURSES_INFO}
-    Tone: Friendly, professional, and encouraging (use Egyptian Arabic primarily).
-    Rules:
-    1. First, welcome the user and ask for their name, level (student, graduate, etc.), and what they are interested in.
-    2. Based on their level and interests, recommend one or two specific courses or tracks.
-    3. Explain WHY this choice is good for them.
-    4. If they seem interested in booking, tell them to click the "Book Now" button on the course card or visit the "Tracks" section.
-    5. Always be concise and use emojis.
-    `
+    model: modelName,
+    systemInstruction: systemInstruction
   });
 
   const chat = model.startChat({
