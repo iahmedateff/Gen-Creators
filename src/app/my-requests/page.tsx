@@ -20,7 +20,7 @@ export default function MyRequestsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    let channel: any;
+    let activeChannel: any = null;
 
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -32,8 +32,17 @@ export default function MyRequestsPage() {
       const userEmail = session.user.email!;
       fetchMyEnrollments(userEmail);
 
-      // Create a unique channel name for this user to avoid conflicts
-      channel = supabase.channel(`user-requests-${userEmail.replace(/[@.]/g, '-')}`);
+      const channelName = `user-requests-${userEmail.replace(/[@.]/g, '-')}`;
+      
+      // Cleanup any existing channel with the same name before creating a new one
+      const existingChannels = supabase.getChannels();
+      const oldChannel = existingChannels.find(c => c.topic === `realtime:${channelName}`);
+      if (oldChannel) {
+        await supabase.removeChannel(oldChannel);
+      }
+
+      // Create and configure the channel
+      const channel = supabase.channel(channelName);
       
       channel
         .on(
@@ -45,22 +54,24 @@ export default function MyRequestsPage() {
             filter: `email=eq.${userEmail}`
           },
           (payload: any) => {
-            console.log('Real-time update received:', payload);
             setEnrollments(current => 
               current.map(e => e.id === payload.new.id ? { ...e, ...payload.new } : e)
             );
           }
-        )
-        .subscribe((status: string) => {
-          console.log(`Supabase Real-time status for ${userEmail}:`, status);
-        });
+        );
+
+      // Store in ref-like variable for cleanup
+      activeChannel = channel;
+      
+      // Finally, subscribe
+      channel.subscribe();
     };
     
     init();
 
     return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
+      if (activeChannel) {
+        supabase.removeChannel(activeChannel);
       }
     };
   }, []);
