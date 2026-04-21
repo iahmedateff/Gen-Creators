@@ -4,6 +4,14 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 
 export default function FinalCTASection() {
+  const whatsappNumber = "201012345678"; // Replace with your actual WhatsApp number
+  const message = encodeURIComponent("أهلاً Gen Creators، حابب أنضم للمنصة وأستفسر أكثر عن الكورسات والمسارات المتاحة.");
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+  const handleJoinClick = () => {
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <section className="py-32 relative bg-gray-50/30 dark:bg-transparent">
       <div className="absolute inset-0 bg-[#ff5e00] opacity-[0.01] dark:opacity-[0.03] pattern-grid-lg pointer-events-none"></div>
@@ -24,12 +32,29 @@ export default function FinalCTASection() {
           </h2>
           
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 relative z-10">
-            سجل بياناتك وهنتواصل معاك فوراً لتحديد المستوى وتفاصيل البداية
+            تواصل معنا مباشرة عبر الواتساب لتحديد مستواك والبدء فوراً في رحلتك الجديدة
           </p>
           
           <div className="relative z-10 flex justify-center">
-            <Button size="lg" className="px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl w-full sm:w-auto hover:scale-105 transition-transform duration-300 shadow-[0_4px_20px_rgba(255,94,0,0.15)] dark:shadow-[0_0_40px_rgba(255,94,0,0.3)]">
-              انضم إلينا الآن
+            <Button 
+              size="lg" 
+              onClick={handleJoinClick}
+              className="px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl w-full sm:w-auto hover:bg-[#25D366] hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(255,94,0,0.15)] dark:shadow-[0_0_40px_rgba(255,94,0,0.3)] group flex items-center gap-3"
+            >
+              <span>انضم إلينا عبر واتساب</span>
+              <svg 
+                viewBox="0 0 24 24" 
+                width="24" 
+                height="24" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                fill="none" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className="group-hover:scale-110 transition-transform"
+              >
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
             </Button>
           </div>
         </motion.div>
