@@ -31,15 +31,22 @@ export default function ChatBot() {
 
     const userMessage = input.trim();
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    
+    // Add user message to UI
+    const updatedMessages = [...messages, { role: 'user', content: userMessage } as Message];
+    setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
-      // Format history for Gemini
-      const history = messages.map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.content }]
-      }));
+      // FIX: Filter history so it ALWAYS starts with a 'user' role for Gemini
+      // We skip the first 'model' welcome message in the API history
+      const history = updatedMessages
+        .filter((_, index) => index !== 0) // Skip the initial local greeting
+        .slice(0, -1) // Exclude the new user message (it goes in sendMessage)
+        .map(msg => ({
+          role: msg.role,
+          parts: [{ text: msg.content }]
+        }));
 
       const aiResponse = await getChatResponse(history, userMessage);
       setMessages(prev => [...prev, { role: 'model', content: aiResponse }]);
@@ -107,8 +114,8 @@ export default function ChatBot() {
                     </div>
                     <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user' 
-                        ? 'bg-primary text-white rounded-tr-none' 
-                        : 'bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200 rounded-tl-none'
+                        ? 'bg-primary text-white rounded-tr-none shadow-md' 
+                        : 'bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm'
                     }`}>
                       {msg.content}
                     </div>
@@ -117,12 +124,17 @@ export default function ChatBot() {
               ))}
               {isLoading && (
                 <div className="flex justify-end">
-                  <div className="bg-gray-100 dark:bg-white/5 p-3 rounded-2xl rounded-tl-none">
-                    <Loader2 size={16} className="animate-spin text-gray-500" />
+                  <div className="bg-gray-100 dark:bg-white/5 p-3 rounded-2xl rounded-tl-none flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                   </div>
                 </div>
               )}
             </div>
+
+            {/* Input Overlay for loading */}
+            {isLoading && <div className="absolute bottom-20 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-pulse"></div>}
 
             {/* Input */}
             <form onSubmit={handleSend} className="p-4 border-t border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-black/20">
@@ -137,7 +149,7 @@ export default function ChatBot() {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-xl disabled:opacity-50 disabled:grayscale transition-all hover:scale-105 active:scale-95"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-xl disabled:opacity-50 disabled:grayscale transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
                 >
                   <Send size={18} />
                 </button>
