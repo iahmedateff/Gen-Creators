@@ -3,45 +3,60 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-const COURSES_INFO = `
-Available Courses:
-1. Marketing (1200 EGP) - Digital campaigns, ads, results.
-2. Programming (1800 EGP) - Web development from scratch.
-3. Artificial Intelligence (2200 EGP) - Future tech, AI applications.
-4. Business (1000 EGP) - Starting and managing projects.
-5. Design (1300 EGP) - Graphic design, UI/UX.
+export const COURSES_DATA = [
+  { key: "Marketing", title: "Marketing", price: 1200, type: 'course', desc: "اتعلم تعمل حملات وإعلانات وتجيب نتايج", color: "from-pink-500 to-orange-400" },
+  { key: "Programming", title: "Programming", price: 1800, type: 'course', desc: "ابني مواقع واشتغل كمبرمج من الصفر", color: "from-blue-500 to-cyan-400" },
+  { key: "Artificial Intelligence", title: "Artificial Intelligence", price: 2200, type: 'course', desc: "ادخل مجال المستقبل واشتغل بالـ AI", color: "from-purple-500 to-indigo-500" },
+  { key: "Business", title: "Business", price: 1000, type: 'course', desc: "ابدأ مشروعك واديره صح", color: "from-green-400 to-emerald-600" },
+  { key: "Design", title: "Design", price: 1300, type: 'course', desc: "اشتغل جرافيك و UI/UX باحتراف", color: "from-yellow-400 to-orange-500" },
+  { key: "Marketing Track", title: "Marketing Track", price: 3000, type: 'track', desc: "مسار متكامل من أساسيات التسويق لإدارة الحملات", color: "from-orange-500 to-red-600" },
+  { key: "Programming Track", title: "Programming Track", price: 4000, type: 'track', desc: "مسار متكامل من الصفر لبناء تطبيقات كاملة", color: "from-blue-600 to-indigo-700" },
+  { key: "AI Track", title: "AI Track", price: 5000, type: 'track', desc: "مسار متكامل في تعلم الآلة وتطبيقات الذكاء الاصطناعي", color: "from-purple-600 to-violet-800" },
+  { key: "Design Track", title: "Design Track", price: 3200, type: 'track', desc: "مسار متكامل من أساسيات التصميم لبناء Portfolio", color: "from-pink-500 to-rose-600" },
+];
 
-Available Tracks (Integrated bundles):
-1. Marketing Track (3000 EGP) - Marketing basics, campaign management, data analysis.
-2. Programming Track (4000 EGP) - Programming basics, frontend development, databases, full applications.
-3. AI Track (5000 EGP) - Intro to AI, Machine Learning, AI apps, practical projects.
-4. Design Track (3200 EGP) - Design basics, UI/UX, visual identity, portfolio building.
-`;
+const COURSES_INFO = COURSES_DATA.map(c => 
+  `- ${c.title} (${c.price} EGP, ${c.type}): ${c.desc}`
+).join('\n');
 
-const systemInstruction = `You are the "Gen Creators AI Counselor". Your goal is to help users find the best course or track on our platform. 
-Platform Context: ${COURSES_INFO}
-Tone: Friendly, professional, and encouraging (use Egyptian Arabic primarily).
+const systemInstruction = `You are the "Gen Creators AI Counselor". Your goal is to help users find the best course or track.
+Platform offerings:
+${COURSES_INFO}
+
 Rules:
-1. Welcome the user and ask for their name, level, and interests.
-2. Based on their level and interests, recommend one or two specific courses or tracks.
-3. Explain WHY this choice is good for them.
-4. If they seem interested in booking, tell them to click the "Book Now" button on the course card or visit the "Tracks" section.
-5. Always be concise and use emojis.
+1. Welcome the user, ask for their name, level, and interests.
+2. Based on their answers, recommend ONE specific course or track.
+3. IMPORTANT: When you make a recommendation, you MUST end your message with this EXACT JSON tag (no markdown, no backticks):
+   [RECOMMEND:CourseName]
+   Where CourseName is EXACTLY one of: Marketing, Programming, Artificial Intelligence, Business, Design, Marketing Track, Programming Track, AI Track, Design Track
+4. Only include ONE [RECOMMEND:...] tag per message.
+5. Use Egyptian Arabic. Be friendly, concise, and use emojis.
 `;
 
-export async function getChatResponse(history: { role: string, parts: { text: string }[] }[], message: string) {
-  // Try Gemini 2.0 Flash, fallback to lite version on rate limit
+export async function getChatResponse(history: { role: string, parts: { text: string }[] }[], message: string): Promise<{ text: string; recommendation?: string }> {
   try {
-    return await callGemini("gemini-2.0-flash", history, message);
+    const raw = await callGemini("gemini-2.0-flash", history, message);
+    return parseResponse(raw);
   } catch (error: any) {
     const is429 = error.message?.includes('429') || error.message?.includes('Resource exhausted');
     const is404 = error.message?.includes('404') || error.message?.includes('not found');
     if (is429 || is404) {
       console.warn('Primary model unavailable, falling back to gemini-2.0-flash-lite');
-      return await callGemini("gemini-2.0-flash-lite", history, message);
+      const raw = await callGemini("gemini-2.0-flash-lite", history, message);
+      return parseResponse(raw);
     }
     throw error;
   }
+}
+
+function parseResponse(raw: string): { text: string; recommendation?: string } {
+  const match = raw.match(/\[RECOMMEND:([^\]]+)\]/);
+  if (match) {
+    const recommendation = match[1].trim();
+    const text = raw.replace(/\[RECOMMEND:[^\]]+\]/, '').trim();
+    return { text, recommendation };
+  }
+  return { text: raw };
 }
 
 async function callGemini(modelName: string, history: any[], message: string) {
@@ -50,10 +65,7 @@ async function callGemini(modelName: string, history: any[], message: string) {
     systemInstruction: systemInstruction
   });
 
-  const chat = model.startChat({
-    history: history,
-  });
-
+  const chat = model.startChat({ history });
   const result = await chat.sendMessage(message);
   const response = await result.response;
   return response.text();
